@@ -1,0 +1,22 @@
+{
+  "name": "vestingcontract",
+  "version": "1.0.0",
+  "description": "Vesting contract for Tellor's operations.",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tellor-io/VestingContract.git"
+  },
+  "author": "Tellor Inc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tellor-io/VestingContract/issues"
+  },
+  "homepage": "https://github.com/tellor-io/VestingContract#readme",
+  "devDependencies": {
+    "hardhat": "^2.6.4"
+  }
+}
