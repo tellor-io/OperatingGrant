@@ -11,19 +11,17 @@ import "../interfaces/ITellor.sol";
 contract OparatingGrant {
     //Storage
     uint256 public lastReleaseTime;
-    address public beneficiary;
-    address public tellorAddress;
-    ITellor public tellor;
+    uint256 public maxAmount;
+    address public beneficiary = 0x39e419ba25196794b595b2a595ea8e527ddc9856;
+    address public constant tellorAddress = 0x88df592f8eb5d7bd38bfef7deb0fbc02cf3778a0;
 
     //Events
     event VestedDeposit (uint _amount);
     event TokenWithdrawal (uint _amount);
 
 
-    constructor (address _beneficiary, address payable _tellorAddress) {
-        beneficiary = _beneficiary;
+    constructor () {
         lastReleaseTime = block.timestamp;
-        tellor = ITellor(_tellorAddress); 
     }
 
     /**
@@ -31,37 +29,25 @@ contract OparatingGrant {
      *
      */
     function updateBeneficiary (address _newBeneficiary) external {
-        require(msg.sender == beneficiary);
+        require(msg.sender == beneficiary, "must be the beneficiary");
         beneficiary = _newBeneficiary;
     } 
-     
-    /**
-     * @dev Use this function to deposit tokens for vesting
-     *
-     */
-    function depositTrb (uint _amount) external payable {
-        tellor.transfer(beneficiary, _amount);
-        emit VestedDeposit (_amount);
-    }
     
     /**
      * @dev Use this function to withdraw released tokens
      *
      */
-    function withdrawTrb(uint _amount) external {
-        require(msg.sender == beneficiary); 
-        uint _availableBalance = tellor.balanceOf(address(this));       
-        require(_amount <= _availableBalance);
-        uint _releasedAmount = (block.timestamp - lastReleaseTime)/300;
-        require(_amount <= _releasedAmount);
+    function withdrawTrb() external {
+        uint256 _availableBalance = tellor.balanceOf(address(this));
+        if(_availableBalance > maxAmount){
+            maxAmount = _availableBalance;
+        }
+        uint256 _releasedAmount = maxAmount * (block.timestamp - lastReleaseTime)/(86400* 365 * 2);
+        if(_releasedAmount > _availableBalance){
+            _releasedAmount = _availableBalance;
+        }
         lastReleaseTime = block.timestamp;
-        tellor.transfer(beneficiary, _amount);
-        emit TokenWithdrawal(_amount);
+        ITellor(tellorAddress).transfer(beneficiary, _releasedAmount);
+        emit TokenWithdrawal(_releasedAmount);
     }
-
-    /**  
-     * @dev allow contract to receive funds  
-     */  
-    fallback() external payable {} 
-
 }
