@@ -18,5 +18,11 @@
   "homepage": "https://github.com/tellor-io/VestingContract#readme",
   "devDependencies": {
     "hardhat": "^2.6.4"
+  },
+  "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "chai": "^4.3.4",
+    "ethers": "^5.5.1",
+    "web3": "^1.6.0"
   }
 }
