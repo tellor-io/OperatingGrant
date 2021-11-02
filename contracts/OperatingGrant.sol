@@ -8,7 +8,7 @@ import "../interfaces/ITellor.sol";
  @title OperatingGrant
  @dev This contract allows the Tellor team to receive a grant to fund operations.
 */
-contract OparatingGrant {
+contract OperatingGrant {
     //Storage
     uint256 public lastReleaseTime;
     uint256 public maxAmount;
@@ -24,7 +24,7 @@ contract OparatingGrant {
     }
 
     /**
-     * @dev Use this function to deposit tokens for vesting
+     * @dev Use this function to update the beneficiary address
      *
      */
     function updateBeneficiary (address _newBeneficiary) external {
